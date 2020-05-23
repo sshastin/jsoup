@@ -41,7 +41,7 @@ public class Main {
     private static final Map<String, List<Station>> LINES_MAP_TEMP = new HashMap<>();
     private static final List<Connection> CONNECTIONS = new ArrayList<>();
 
-    // При OVERWRITE_FILE == true aайл будет пересоздан, если он уже существует.
+    // При OVERWRITE_FILE == true файл будет пересоздан, если он уже существует.
     private static final boolean OVERWRITE_FILE = true;
 
     @FunctionalInterface
