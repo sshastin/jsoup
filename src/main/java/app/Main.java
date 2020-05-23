@@ -17,6 +17,7 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,13 +33,16 @@ public class Main {
     private static final String URL = "https://ru.wikipedia.org/wiki/";
     private static final String LOCAL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36";
-    private static final String LOCAL_PATH = "src/main/sourceFiles/";
+    private static final String LOCAL_PATH = "target/";
     private static final String QUERY = URLEncoder.
             encode("Список_станций_Московского_метрополитена", StandardCharsets.UTF_8);
     private static final String JSON_FILE_OUT = "moscow_underground_stations.json";
     private static final String TABLE_SELECTOR = "standard sortable";
     private static final Map<String, List<Station>> LINES_MAP_TEMP = new HashMap<>();
     private static final List<Connection> CONNECTIONS = new ArrayList<>();
+
+    // При OVERWRITE_FILE == true aайл будет пересоздан, если он уже существует.
+    private static final boolean OVERWRITE_FILE = true;
 
     @FunctionalInterface
     private interface BiFunctionThrowable<T, U, R> {
@@ -47,15 +51,18 @@ public class Main {
 
     @SneakyThrows(IOException.class)
     public static void main(String[] args) {
-        final Document page = getJsoupDocument.apply((URL + QUERY), LOCAL_USER_AGENT);
-        page.getElementsByClass(TABLE_SELECTOR).forEach(parseTableToJson);
-        List<Line> linesFinal = createLines.apply(LINES_MAP_TEMP);
-        ObjectMapper objectMapper = new ObjectMapper().setDefaultPrettyPrinter(new DefaultPrettyPrinter());
-        ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-        JSONWrappedObject objectConnections = new JSONWrappedObject("\"connections\":", "}", CONNECTIONS);
-        JSONWrappedObject objectLines = new JSONWrappedObject("{ \"lines\":", ", " +
-                objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectConnections), linesFinal);
-        objectWriter.writeValue(Paths.get(LOCAL_PATH + JSON_FILE_OUT).toFile(), objectLines);
+        if (!(Files.exists(Paths.get(LOCAL_PATH + JSON_FILE_OUT)) && !OVERWRITE_FILE)) {
+            final Document page = getJsoupDocument.apply((URL + QUERY), LOCAL_USER_AGENT);
+            page.getElementsByClass(TABLE_SELECTOR).forEach(parseTableToJson);
+            List<Line> linesFinal = createLines.apply(LINES_MAP_TEMP);
+            ObjectMapper objectMapper = new ObjectMapper().setDefaultPrettyPrinter(new DefaultPrettyPrinter());
+            ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+            JSONWrappedObject objectConnections = new JSONWrappedObject("\"connections\":", "}", CONNECTIONS);
+            JSONWrappedObject objectLines = new JSONWrappedObject("{ \"lines\":", ", " +
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectConnections), linesFinal);
+            objectWriter.writeValue(Paths.get(LOCAL_PATH + JSON_FILE_OUT).toFile(), objectLines);
+        }
+        ////// deserialize here
     }
 
     private static final BiFunctionThrowable<String, String, Document> getJsoupDocument = (urlWithQuery, userAgent) ->
