@@ -1,3 +1,5 @@
+package app.types;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,6 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Station {
-    private String name;
+public class ConnectedStation {
+    private String line;
+    private Station station;
 }

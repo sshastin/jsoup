@@ -1,3 +1,9 @@
+package app;
+
+import app.types.ConnectedStation;
+import app.types.Connection;
+import app.types.Line;
+import app.types.Station;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
