@@ -14,10 +14,10 @@ import java.util.List;
 @EqualsAndHashCode
 public class Connection {
     @Getter
-    private List<ConnectedStation> connectionList = new ArrayList<>();
+    private List<ConnectedStation> connectedStationList = new ArrayList<>();
 
     public void addConnectedStation(ConnectedStation connectedStation) {
-        connectionList.add(connectedStation);
-        connectionList.sort(Comparator.comparing(ConnectedStation::getLine));
+        connectedStationList.add(connectedStation);
+        connectedStationList.sort(Comparator.comparing(ConnectedStation::getLine));
     }
 }

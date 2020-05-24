@@ -1,14 +1,14 @@
 package app.types;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
 @ToString
-@EqualsAndHashCode
-public class Station {
-    private final String name;
+public class Lines {
+    private final List<Line> linesList;
 }

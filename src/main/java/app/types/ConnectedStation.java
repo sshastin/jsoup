@@ -10,6 +10,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class ConnectedStation {
-    private String line;
-    private Station station;
+    private final String line;
+    private final Station station;
 }

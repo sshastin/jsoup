@@ -10,6 +10,6 @@ import java.util.List;
 @Getter
 @ToString
 public class Line {
-    private String number;
-    private List<Station> stations;
+    private final String number;
+    private final List<Station> stations;
 }
