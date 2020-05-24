@@ -42,7 +42,7 @@ public class Main {
     private static final List<Connection> CONNECTIONS = new ArrayList<>();
 
     // При OVERWRITE_FILE == true файл будет пересоздан, если он уже существует.
-    private static final boolean OVERWRITE_FILE = true;
+    private static final boolean OVERWRITE_FILE = false;
 
     @FunctionalInterface
     private interface BiFunctionThrowable<T, U, R> {
@@ -142,7 +142,7 @@ public class Main {
 
                         connection = parseLineConnections.apply(lineConnection);
 
-                        if (connection.getConnection().isEmpty()) {
+                        if (connection.getConnectionList().isEmpty()) {
                             connectedStation1 = new ConnectedStation(line1Number, station);
                             connection.addConnectedStation(connectedStation1);
 
@@ -155,7 +155,7 @@ public class Main {
                             }
                         }
                     }
-                    if (!CONNECTIONS.contains(connection) && connection != null && connection.getConnection().isEmpty()) {
+                    if ((!CONNECTIONS.contains(connection)) && (connection != null) && (!connection.getConnectionList().isEmpty())) {
                         CONNECTIONS.add(connection);
                     }
                 }));
