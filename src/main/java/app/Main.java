@@ -42,7 +42,7 @@ public class Main {
     private static final List<Connection> CONNECTIONS = new ArrayList<>();
 
     // При OVERWRITE_FILE == true файл будет пересоздан, если он уже существует.
-    private static final boolean OVERWRITE_FILE = true;
+    private static final boolean OVERWRITE_FILE = false;
 
     @FunctionalInterface
     private interface BiFunctionThrowable<T, U, R> {
